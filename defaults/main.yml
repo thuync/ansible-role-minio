@@ -1,5 +1,9 @@
 ---
-minio_version: RELEASE.2024-06-13T22-53-53Z
+# Versions: https://dl.minio.io/server/minio/release/linux-{{ go_arch }}/archive/
+minio_server_version: RELEASE.2024-06-13T22-53-53Z
+
+# Versions: https://dl.minio.io/client/mc/release/linux-{{ go_arch }}/archive/
+minio_client_version: RELEASE.2024-06-12T14-34-03Z
 # Install server, client or both
 minio_install_server: true
 minio_install_client: true
@@ -19,11 +23,11 @@ minio_server_cluster_nodes: []
 minio_server_bin: /usr/local/bin/minio
 minio_client_bin: /usr/local/bin/mc
 
-# mino server config dirs
+# minio server config dirs
 minio_etc_dir: /etc/minio
 minio_cert_dir: "{{ minio_etc_dir }}/ssl"
 minio_policy_dir: "{{ minio_etc_dir }}/policy"
-# mino server env file
+# minio server env file
 minio_server_envfile: "{{ minio_etc_dir }}/minio.conf"
 
 # Minio server listen address
