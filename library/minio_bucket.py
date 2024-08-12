@@ -96,6 +96,26 @@ class REMatcher:
         """
         return self.rematch.group(i)
 
+
+def get_pa_statements(bucket_name):
+    return [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "*"
+                ]
+            },
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::%s/*" % bucket_name
+            ]
+        }
+    ]
+
+
 def get_ro_statements(bucket_name):
     return [
         {
@@ -186,7 +206,7 @@ def main():
             access_key=dict(required=True, type="str"),
             secret_key=dict(required=True, type="str"),
             state=dict(required=False, type="str", default="present", choices=["absent","present"]),
-            policy=dict(required=False, type="str", choices=["read-only","write-only","read-write"]),
+            policy=dict(required=False, type="str", choices=["read-only","write-only","read-write","public-access"]),
             validate_certs=dict(required=False, type="bool", default=True),
             object_lock=dict(required=False, type="bool", default=False)
         ),
@@ -259,7 +279,10 @@ def main():
                             if policy == "read-only" else \
                             get_wo_statements(bucket_name) \
                             if policy == "write-only" else \
-                            get_rw_statements(bucket_name)
+                            get_pa_statements(bucket_name) \
+                            if policy == "public-access" else \
+                            get_rw_statements(bucket_name) \
+                            if policy == "read-write" else []
                     }))
                 exit_message = dict(failed=False, changed=True)
             else:
