@@ -34,3 +34,5 @@
   register: apply_policy
   when: create_policy.changed
   changed_when: '"Policy `" + user.name + "` is set on user `" + user.name + "`" in apply_policy.stdout'
+  ignore_errors: true
+
